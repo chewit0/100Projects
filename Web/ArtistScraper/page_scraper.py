@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 import pandas
 import csv
 
-f = csv.writer(open('Web/z-artist-names.csv', 'w'))
+f = csv.writer(open('Web/ArtistScraper/z-artists.csv', 'w'))
 f.writerow(['Name', 'Nationality', 'Years', 'Link'])
 
 def get_webpage(url):    
@@ -21,17 +21,26 @@ def read_html_from_file(path):
         soup = BeautifulSoup(f1.read(), 'html.parser')
     return soup
 
-def save_html_to_file(path, url):
-    '''saves webpage to file'''
+def save_html_to_file(path, url, append):
+    '''saves webpage to file, append: Appends to existing file instead of write.'''
     
     response = requests.get(url)
-    with open(path, 'wb') as f2:
-        f2.write(response.content)
+    if append:
+        with open(path, 'ab') as f2:
+            f2.write(response.content)
 
-soup = read_html_from_file("Web/dataset.html")
+    else: 
+        with open(path, 'wb') as f2:
+            f2.write(response.content)
 
-pageinfo = soup.find(class_='AlphaNav')
-numbers = pageinfo.find("td",{"align":"center"})
+for i in range(1,5): #Know that there are only 4 pages - need a way of generalising this
+    url = "https://web.archive.org/web/20121010201041/http://www.nga.gov/collection/anZ" + str(i) + ".htm"
+    data = get_webpage(url)
+    filepath = "/home/joe/Projects/100Projects/Web/ArtistScraper/data2.html" 
+    save_html_to_file(filepath, url, True)
+
+
+soup = read_html_from_file("Web/ArtistScraper/dataset.html")
 
 last_links = soup.find(class_='AlphaNav').decompose() # Remove extra links at bottom of file
 page_text = soup.find_all("div",{"class":"BodyText"})    
