@@ -36,7 +36,7 @@ def save_html_to_file(path, url, append):
 for i in range(1,5): #Know that there are only 4 pages - need a way of generalising this
     url = "https://web.archive.org/web/20121010201041/http://www.nga.gov/collection/anZ" + str(i) + ".htm"
     data = get_webpage(url)
-    filepath = "/home/joe/Projects/100Projects/Web/ArtistScraper/data2.html" 
+    filepath = "/home/joe/Projects/100Projects/Web/ArtistScraper/dataset.html" 
     save_html_to_file(filepath, url, True)
 
 
